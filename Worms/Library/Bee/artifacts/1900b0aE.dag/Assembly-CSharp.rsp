@@ -362,10 +362,10 @@
 "Assets/Imports/Quirky Series Vol.2 [v1.3]/_Scripts/Demo.cs"
 "Assets/Scripts/Managers/InitializeManager.cs"
 "Assets/Scripts/Managers/TurnManager.cs"
-"Assets/Scripts/OpeningButtons.cs"
 "Assets/Scripts/PlayerWorms.cs"
+"Assets/Scripts/UI/OpeningButtons.cs"
 "Assets/Scripts/Worms.cs"
-"Assets/Scripts/WormsBehaviour.cs"
+"Assets/ThirdPersonMovement.cs"
 -langversion:9.0
 
 /deterministic
