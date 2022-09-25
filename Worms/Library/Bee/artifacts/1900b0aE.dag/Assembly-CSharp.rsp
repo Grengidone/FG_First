@@ -361,11 +361,13 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
 "Assets/Imports/Quirky Series Vol.2 [v1.3]/_Scripts/Demo.cs"
 "Assets/Scripts/Managers/InitializeManager.cs"
-"Assets/Scripts/Managers/TurnManager.cs"
+"Assets/Scripts/Managers/MonoSingleton.cs"
+"Assets/Scripts/Player/ActivePlayerInput.cs"
+"Assets/Scripts/Player/ActivePlayerManager.cs"
+"Assets/Scripts/Player/Worms/Worms.cs"
 "Assets/Scripts/PlayerWorms.cs"
+"Assets/Scripts/ThirdPersonMovement.cs"
 "Assets/Scripts/UI/OpeningButtons.cs"
-"Assets/Scripts/Worms.cs"
-"Assets/ThirdPersonMovement.cs"
 -langversion:9.0
 
 /deterministic

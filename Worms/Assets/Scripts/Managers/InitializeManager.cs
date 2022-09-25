@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InitializeManager : MonoBehaviour
+public class InitializeManager : MonoSingleton<InitializeManager>
 {
-    public static InitializeManager instance;
     [SerializeField] GameObject _wormPrefab;
     [SerializeField] int _health;
     List<Worms> worms = new List<Worms>(0);
-    List<PlayerWorms> players = new List<PlayerWorms>(0);
+    [HideInInspector] public static List<PlayerWorms> players = new List<PlayerWorms>(0);
     [SerializeField] List<string> wormNames = new List<string>(16);
 
     private int _wormsPerPlayer;
@@ -22,25 +21,11 @@ public class InitializeManager : MonoBehaviour
     // so that they know which player to start with
     #endregion
 
-    private void Awake()
-    {
-        if (instance == null || instance == this)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-        Worms.stinked += DeathHasOccured;
-        
-    }
 
     void Start()
     {
         _wormsPerPlayer = PlayerPrefs.GetInt("WormsCount");
         _playerCount = PlayerPrefs.GetInt("PlayersCount");
-        //players = new List<PlayerWorms>();
         int id = 0;
 
         for (int j = 0; j < _playerCount; j++)
@@ -91,12 +76,7 @@ public class InitializeManager : MonoBehaviour
 
     void DeathHasOccured(Worms worms)
     {
-        print("The worm " + worms.GetName() + " has died!");
+        print("The worm " + worms.GetName() + " has died!" );
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
