@@ -140,7 +140,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 2
-  m_Radius: 0.6
+  m_Radius: 0.47
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -174,21 +174,30 @@ CapsuleCollider:
   m_Height: 1.91
   m_Direction: 2
   m_Center: {x: 0, y: 0.99, z: 0}
---- !u!114 &553575277
+--- !u!114 &1655922520763756603
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 653519371314954045}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b7eb33c0d3ee1d4fa3cfaf14ff6f30c, type: 3}
+  m_Script: {fileID: 11500000, guid: be368065f5bd45c47ab242996bca313e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 6
-  _turnSmoothTime: 0.1
-  _cam: {fileID: 0}
+--- !u!114 &76330690974708672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 653519371314954045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d901d00aea8b404e89067b1e841daa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &653519371315438365 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 4ab367573fc7db8478af59131ecc7369, type: 3}

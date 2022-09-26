@@ -6,9 +6,10 @@ public class InitializeManager : MonoSingleton<InitializeManager>
 {
     [SerializeField] GameObject _wormPrefab;
     [SerializeField] int _health;
-    List<Worms> worms = new List<Worms>(0);
-    [HideInInspector] public static List<PlayerWorms> players = new List<PlayerWorms>(0);
+    List<Worms> worms = new List<Worms>();
+    [HideInInspector] public static List<PlayerWorms> players = new List<PlayerWorms>();
     [SerializeField] List<string> wormNames = new List<string>(16);
+    [SerializeField] List<GameObject> spawnPoints = new List<GameObject>();
 
     private int _wormsPerPlayer;
     private int _playerCount;
@@ -22,7 +23,7 @@ public class InitializeManager : MonoSingleton<InitializeManager>
     #endregion
 
 
-    void Start()
+    protected override void OnAwake()
     {
         _wormsPerPlayer = PlayerPrefs.GetInt("WormsCount");
         _playerCount = PlayerPrefs.GetInt("PlayersCount");
@@ -36,8 +37,8 @@ public class InitializeManager : MonoSingleton<InitializeManager>
             print(players[j]);
             for (int k = 0; k < _wormsPerPlayer; k++)
             {
-                Worms worms = new Worms(id);
-                worms.SetData(_health, wormNames[id], Instantiate(_wormPrefab));
+                Worms worms = Instantiate(_wormPrefab).GetComponent<Worms>();
+                worms.SetData(_health, wormNames[id]);
                 players[j].SayHello();
                 players[j].AddWorm(worms);
                 //players[0].AddWorm(worms);
@@ -60,9 +61,9 @@ public class InitializeManager : MonoSingleton<InitializeManager>
             foreach (Worms worm in wormList)
             {
                 direction = new Vector3(Mathf.Sin(Mathf.Deg2Rad * i), 0f, Mathf.Cos(Mathf.Deg2Rad * i)).normalized;
-                worm.GetObject().transform.position = direction * 10f;
-                worm.GetObject().transform.Translate(new Vector3(0f, z * 2f, 0f), Space.Self);
-                worm.GetObject().name = worm.GetName();
+                worm.gameObject.transform.position = direction * 10f;
+                worm.gameObject.transform.Translate(new Vector3(0f, z * 2f, 0f), Space.Self);
+                worm.gameObject.name = worm.GetName();
                 i += 360f / (_playerCount * _wormsPerPlayer);
 
             }

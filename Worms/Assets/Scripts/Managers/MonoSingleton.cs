@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
+public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     #region Public Accessors
 
@@ -44,7 +44,9 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 
             return;
         }
+        OnAwake();
     }
+    protected abstract void OnAwake();
     protected virtual void OnDestroy()
     {
         if (Instance == GetComponent<T>())

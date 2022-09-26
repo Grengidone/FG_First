@@ -3,25 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Worms
+public class Worms : MonoBehaviour
 {
+    private void Awake()
+    {
+        
+    }
     public delegate void Stinker(Worms worms);
     public static event Stinker stinked;
 
     private int _health;
     private string _name;
     private int _id;
-    private GameObject _gameObject;
     public Worms(int id)
     {
         _id = id;
     }
 
-    public void SetData(int health, string name, GameObject gameObject)
+    public void SetData(int health, string name)
     {
         _health = health;
         _name = name;
-        _gameObject = gameObject;
     }
  
     public int GetHealth()
@@ -38,19 +40,12 @@ public class Worms
         return _id;
     }
 
-    public GameObject GetObject()
-    {
-        return _gameObject;
-    }
+    
 
-    public void Kill()
+    public void OnDeath()
     {
-        _gameObject.SetActive(false);
+        gameObject.SetActive(false);
         stinked(this);
     }
 
-    public static void OnDeath(Worms deadWorm)
-    {
-        
-    }
 }

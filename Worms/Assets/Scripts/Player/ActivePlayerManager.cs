@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActivePlayerManager : MonoBehaviour
+public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
 {
-    // Start is called before the first frame update
+    protected override void OnAwake()
+    {
+        
+    }
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
