@@ -2,56 +2,81 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
+public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 {
-    #region Public Accessors
-
-    /// <summary>
-    /// Static instance of PersistentGameObjectSingleton which allows it to be accessed by any other script.
-    /// </summary>
-    public static MonoSingleton<T> Instance { get; private set; }
-
-    #endregion
-
-    #region Unity methods
-
-    /// <summary>
-    /// Things to do as soon as the scene starts up
-    /// </summary>
-
-    #endregion
-    protected virtual void Awake()
+    public static bool dontDestroyOnLoad;
+    private static T m_Instance = null;
+    public static T instance
     {
-        Debug.Log(this.GetType().Name + " - Awoken. Initializing Singleton pattern. Instance Id : " + gameObject.GetInstanceID());
-
-        if (Instance == null)
+        get
         {
-            Debug.Log(this.GetType().Name + " - Setting first instance. Instance Id : " + gameObject.GetInstanceID());
+            /*
+            // Instance requiered for the first time, we look for it
+            if (m_Instance == null)
+            {
+                m_Instance = GameObject.FindObjectOfType(typeof(T)) as T;
 
-            //if not, set instance to this
-            Instance = this;
+                // Object not found, we create a temporary one
+                if (m_Instance == null)
+                {
+                    Debug.LogWarning("No instance of " + typeof(T).ToString() + ", a temporary one is created.");
 
-            //Sets this to not be destroyed when reloading scene
-            //DontDestroyOnLoad(gameObject);
+                    isTemporaryInstance = true;
+                    m_Instance = new GameObject("Temp Instance of " + typeof(T).ToString(), typeof(T)).GetComponent<T>();
+
+                    // Problem during the creation, this should not happen
+                    if (m_Instance == null)
+                    {
+                        Debug.LogError("Problem during the creation of " + typeof(T).ToString());
+                    }
+                }
+                if (!_isInitialized)
+                {
+                    _isInitialized = true;
+                    m_Instance.Init();
+                }
+            }
+            */
+            return m_Instance;
         }
-        else if (Instance != this)
+    }
+
+    public static bool isTemporaryInstance { private set; get; }
+
+    private static bool _isInitialized;
+
+    // If no other monobehaviour request the instance in an awake function
+    // executing before this one, no need to search the object.
+    private void Awake()
+    {
+        if (m_Instance == null)
         {
-            Debug.LogWarning(this.GetType().Name + " - Destroying secondary instance. Instance Id : " + gameObject.GetInstanceID());
-
-            //Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GlobalManager.
-            DestroyImmediate(gameObject.GetComponent<T>());
-            
-
+            m_Instance = this as T;
+        }
+        else if (m_Instance != this)
+        {
+            Debug.LogError("Another instance of " + GetType() + " is already exist! Destroying self...");
+            DestroyImmediate(this);
             return;
         }
-        OnAwake();
-    }
-    protected abstract void OnAwake();
-    protected virtual void OnDestroy()
-    {
-        if (Instance == GetComponent<T>())
+        if (!_isInitialized)
         {
-            Instance = null;
+            if (dontDestroyOnLoad) { DontDestroyOnLoad(gameObject); }
+            _isInitialized = true;
+            m_Instance.Init();
         }
+    }
+
+
+    /// <summary>
+    /// This function is called when the instance is used the first time
+    /// Put all the initializations you need here, as you would do in Awake
+    /// </summary>
+    protected virtual void Init() { }
+
+    /// Make sure the instance isn't referenced anymore when the user quit, just in case.
+    private void OnApplicationQuit()
+    {
+        m_Instance = null;
     }
 }

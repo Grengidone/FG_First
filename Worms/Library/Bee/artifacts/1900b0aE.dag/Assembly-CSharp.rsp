@@ -365,7 +365,7 @@
 "Assets/Scripts/Player/ActivePlayerInput.cs"
 "Assets/Scripts/Player/ActivePlayerManager.cs"
 "Assets/Scripts/Player/Worms/BasicWormPhysics.cs"
-"Assets/Scripts/Player/Worms/Worms.cs"
+"Assets/Scripts/Player/Worms/WormData.cs"
 "Assets/Scripts/PlayerWorms.cs"
 "Assets/Scripts/ThirdPersonMovement.cs"
 "Assets/Scripts/UI/OpeningButtons.cs"

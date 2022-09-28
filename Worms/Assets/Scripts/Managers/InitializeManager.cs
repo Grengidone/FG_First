@@ -5,15 +5,17 @@ using UnityEngine;
 public class InitializeManager : MonoSingleton<InitializeManager>
 {
     [SerializeField] GameObject _wormPrefab;
-    [SerializeField] int _health;
-    List<Worms> worms = new List<Worms>();
-    [HideInInspector] public static List<PlayerWorms> players = new List<PlayerWorms>();
+    [SerializeField] int _startingHealth;
+    List<WormData> worms = new List<WormData>();
+    private List<PlayerWorms> players = new List<PlayerWorms>();
     [SerializeField] List<string> wormNames = new List<string>(16);
     [SerializeField] List<GameObject> spawnPoints = new List<GameObject>();
 
     private int _wormsPerPlayer;
     private int _playerCount;
 
+    InitializeManager initialize;
+ 
     #region Comments
     // We have to initialize each worm at some targeted spawn locations,
     // each seperated from each other without overlapping positions
@@ -22,8 +24,9 @@ public class InitializeManager : MonoSingleton<InitializeManager>
     // so that they know which player to start with
     #endregion
 
+    
 
-    protected override void OnAwake()
+    protected override void Init()
     {
         _wormsPerPlayer = PlayerPrefs.GetInt("WormsCount");
         _playerCount = PlayerPrefs.GetInt("PlayersCount");
@@ -37,13 +40,15 @@ public class InitializeManager : MonoSingleton<InitializeManager>
             print(players[j]);
             for (int k = 0; k < _wormsPerPlayer; k++)
             {
-                Worms worms = Instantiate(_wormPrefab).GetComponent<Worms>();
-                worms.SetData(_health, wormNames[id]);
+                WormData worms = Instantiate(_wormPrefab).GetComponent<WormData>();
+                worms.SetData(_startingHealth, wormNames[id]);
+                worms.SetPlayerID(j);
+                worms.SetID(k);
                 players[j].SayHello();
                 players[j].AddWorm(worms);
-                //players[0].AddWorm(worms);
                 print(id.ToString());
                 id++;
+                this.worms.Add(worms);
             }
         }
 
@@ -57,8 +62,8 @@ public class InitializeManager : MonoSingleton<InitializeManager>
         foreach (PlayerWorms player in players)
         {
 
-            List<Worms> wormList = player.GetWorms();
-            foreach (Worms worm in wormList)
+            List<WormData> wormList = player.GetWorms();
+            foreach (WormData worm in wormList)
             {
                 direction = new Vector3(Mathf.Sin(Mathf.Deg2Rad * i), 0f, Mathf.Cos(Mathf.Deg2Rad * i)).normalized;
                 worm.gameObject.transform.position = direction * 10f;
@@ -67,17 +72,29 @@ public class InitializeManager : MonoSingleton<InitializeManager>
                 i += 360f / (_playerCount * _wormsPerPlayer);
 
             }
-            //print(worms.GetObject());
             z++;
         }
-        
-        
-        //this.worms[1].Kill();
+        SpawnWorms();
+    }
+    private void SpawnWorms()
+    {
+        var list = spawnPoints;
+        int randomNumber;
+        foreach (WormData worm in worms)
+        {
+            randomNumber = Random.Range(0, list.Count);
+            worm.gameObject.transform.position = list[randomNumber].transform.position;
+            list.RemoveAt(randomNumber);
+        }
     }
 
-    void DeathHasOccured(Worms worms)
+    public List<PlayerWorms> GetInitialPlayers()
+    {
+        return players;
+    } 
+
+    void DeathHasOccured(WormData worms)
     {
         print("The worm " + worms.GetName() + " has died!" );
     }
-
 }

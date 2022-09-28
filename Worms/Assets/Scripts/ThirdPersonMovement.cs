@@ -15,12 +15,14 @@ public class ThirdPersonMovement : MonoBehaviour
     [SerializeField] Transform _cam;
     private GameObject _currentPlayerWorm;
 
+
+
     void Start()
     {
-        _currentPlayerWorm = InitializeManager.players[2].GetWorms()[2].gameObject;
+        _currentPlayerWorm = ActivePlayerManager.instance.GetActivePlayer().GetCurrentWorm().gameObject;
         _characterController = _currentPlayerWorm.GetComponent<CharacterController>();
         _cmFreeLook.GetRig(2).LookAt = _currentPlayerWorm.transform;
-        _cmFreeLook.LookAt= _currentPlayerWorm.transform;
+        _cmFreeLook.LookAt = _currentPlayerWorm.transform;
         _cmFreeLook.Follow = _currentPlayerWorm.transform;
     }
 
