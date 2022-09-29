@@ -14,11 +14,12 @@ public class WormData : MonoBehaviour
     public delegate void Stinker(WormData worms);
     public static event Stinker stinked;
 
-    private Slider _healthBar;
-    public int health { get; private set; }
-    public string wormName { get; private set; }
-    public int id { get; private set; }
-    public int playerID { get; private set; }
+    [SerializeField] private Image _healthBar;
+    [HideInInspector] public int health;
+    [HideInInspector] public string wormName;
+    [HideInInspector] public int id;
+    [HideInInspector] public int playerID;
+    [SerializeField] private Transform fireLocation;
 
 
     public void SetID(int id)
