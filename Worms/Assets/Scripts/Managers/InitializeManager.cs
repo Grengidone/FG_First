@@ -68,14 +68,23 @@ public class InitializeManager : MonoSingleton<InitializeManager>
                 direction = new Vector3(Mathf.Sin(Mathf.Deg2Rad * i), 0f, Mathf.Cos(Mathf.Deg2Rad * i)).normalized;
                 worm.gameObject.transform.position = direction * 10f;
                 worm.gameObject.transform.Translate(new Vector3(0f, z * 2f, 0f), Space.Self);
-                worm.gameObject.name = worm.GetName();
                 i += 360f / (_playerCount * _wormsPerPlayer);
 
             }
             z++;
         }
         SpawnWorms();
+        ///StartCoroutine(Countdown(2, 3));
+        ///StartCoroutine(Countdown(4, 4));
+        ///StartCoroutine(Countdown(6, 5));
     }
+
+    IEnumerator Countdown(float time, int dead)
+    {
+        yield return new WaitForSeconds(time);
+        worms[dead].HasDied();
+    }
+
     private void SpawnWorms()
     {
         var list = spawnPoints;
@@ -95,6 +104,6 @@ public class InitializeManager : MonoSingleton<InitializeManager>
 
     void DeathHasOccured(WormData worms)
     {
-        print("The worm " + worms.GetName() + " has died!" );
+        print("The worm " + worms.wormName + " has died!" );
     }
 }

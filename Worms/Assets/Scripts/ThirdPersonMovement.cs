@@ -19,7 +19,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
     void Start()
     {
-        _currentPlayerWorm = ActivePlayerManager.instance.GetActivePlayer().GetCurrentWorm().gameObject;
+        _currentPlayerWorm = ActivePlayerManager.instance.activePlayer.GetCurrentWorm().gameObject;
         _characterController = _currentPlayerWorm.GetComponent<CharacterController>();
         _cmFreeLook.GetRig(2).LookAt = _currentPlayerWorm.transform;
         _cmFreeLook.LookAt = _currentPlayerWorm.transform;

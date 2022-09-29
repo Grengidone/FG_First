@@ -15,7 +15,7 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
     [SerializeField] TextMeshProUGUI clockTime;
     [SerializeField] ThirdPersonMovement cameraData;
 
-    private PlayerWorms _activePlayer;
+    public PlayerWorms activePlayer{ get; private set; }
     
 
     protected override void Init()
@@ -29,8 +29,8 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
             playerOrder.Add(tempOrder[randomNumber]);
             tempOrder.RemoveAt(randomNumber);
         }
-        _activePlayer = playerList[playerOrder[0]];
-        Debug.LogWarning(_activePlayer.GetPlayerID());
+        activePlayer = playerList[playerOrder[0]];
+        Debug.LogWarning(activePlayer.GetPlayerID());
     }
 
     List<int> GenerateList(int count)
@@ -45,12 +45,32 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
 
     public PlayerWorms GetActivePlayer()
     {
-        return _activePlayer;
+        return activePlayer;
     }
 
     public List<PlayerWorms> GetActivePlayers()
     {
         return playerList;
+    }
+    public void RemovePlayer(PlayerWorms removePlayer)
+    {
+        foreach (var player in playerList)
+        {
+            if (player == removePlayer)
+            {
+                playerList.Remove(player);
+                Debug.Log("Player has been removed! Players left = " + playerList.Count);
+                break;
+            }
+        }
+        if (playerList.Count <= 1)
+        {
+            // Announce winner
+        }
+    }
+    public void ChangeTurn()
+    {
+
     }
 
     public void SetNextPlayer()
@@ -60,8 +80,8 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
 
     public void RemovePlayerWorm(WormData worm)
     {
-        int playerId = worm.GetPlayerID();
-        playerList[worm.GetPlayerID()].RemoveWorm(worm);
+        int playerId = worm.playerID;
+        playerList[worm.playerID].RemoveWorm(worm);
         if (playerList[playerId].GetWorms().Count <= 0)
         {
             RemovePlayer(playerId);

@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Unity.VisualScripting.FullSerializer;
+using Unity.VisualScripting;
 
 public class PlayerWorms
 {
     WormData worms;
     List<WormData> myWorms;
-    private int _playerID;
-    private string _playerName;
-    private int _nextWorm;
+    public int playerID;
+    public string playerName;
+    public int nextWorm;
     
     public PlayerWorms(int id)
     {
          myWorms = new List<WormData>();
-        _playerID = id;
-        _nextWorm = 0;
+        playerID = id;
+        nextWorm = 0;
     }
 
     public List<WormData> GetWorms()
@@ -26,7 +27,7 @@ public class PlayerWorms
 
     public int GetPlayerID()
     {
-        return _playerID;
+        return playerID;
     }
 
     public void AddWorm(WormData newWorm)
@@ -36,30 +37,36 @@ public class PlayerWorms
 
     public void RemoveWorm(WormData removeWorm)
     {
+        
         foreach (var worm in myWorms)
         {
             if (worm == removeWorm)
             {
                 myWorms.Remove(worm);
-                Debug.Log("Worm removed! Worms left = " + myWorms.Count);
+                Debug.Log("Worm removed! Player ID " + playerID + " Worms left = " + myWorms.Count);
+                break;
             }
+        }
+        if (myWorms.Count <= 0)
+        {
+            ActivePlayerManager.instance.RemovePlayer(this);
         }
         
     }
     public WormData GetCurrentWorm()
     {
-        return myWorms[_nextWorm];
+        return myWorms[nextWorm];
     }
 
-    public void SetNextWorm()
+    public void PrepareNextWorm()
     {
-        _nextWorm++;
-        _nextWorm = _nextWorm % myWorms.Count;
+        nextWorm++;
+        nextWorm %= myWorms.Count;
     }
 
     public void SayHello()
     {
-        Debug.Log("Hello! I am : " + _playerName + " & my ID is : " + _playerID);
+        Debug.Log("Hello! I am : " + playerName + " & my ID is : " + playerID);
     }
 
 }

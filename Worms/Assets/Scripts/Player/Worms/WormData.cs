@@ -14,54 +14,36 @@ public class WormData : MonoBehaviour
     public delegate void Stinker(WormData worms);
     public static event Stinker stinked;
 
-    [SerializeField] private Slider _healthBar;
-    [SerializeField] private int _health;
-    [SerializeField] private string _name;
-    [SerializeField] private int _id;
-    [SerializeField] private int _playerID;
+    private Slider _healthBar;
+    public int health { get; private set; }
+    public string wormName { get; private set; }
+    public int id { get; private set; }
+    public int playerID { get; private set; }
 
 
     public void SetID(int id)
     {
-        _id = id;
+        this.id = id;
     }
 
     public void SetPlayerID(int playerID)
     {
-        _playerID = playerID;
+        this.playerID = playerID;
     }
 
     public void SetData(int health, string name)
     {
-        _health = health;
-        _name = name;
+        this.health = health;
+        this.wormName = name;
+        gameObject.name = wormName;
     }
  
-    public int GetHealth()
-    {
-        return _health;
-    }
-    public string GetName()
-    {
-        return _name;
-    }
-
-    public int GetID()
-    {
-        return _id;
-    }
-
-    public int GetPlayerID()
-    {
-        return _playerID;
-    }
-
     #region Worm actions
 
     public void TakeDamage(int damageTaken)
     {
-        _health -= damageTaken;
-        if (_health <= 0)
+        health -= damageTaken;
+        if (health <= 0)
         {
             HasDied();
         }
