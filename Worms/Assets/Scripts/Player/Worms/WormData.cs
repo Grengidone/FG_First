@@ -23,7 +23,9 @@ public class WormData : MonoBehaviour
      public int id;
      public int playerID;
     public bool hasTakenDamage = false;
-    [SerializeField] private Transform fireLocation;
+    public Transform fireLocation;
+    public Transform aimCenter;
+    public Transform aimUp;
 
     private void Update()
     {

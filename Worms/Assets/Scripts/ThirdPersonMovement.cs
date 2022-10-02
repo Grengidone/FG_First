@@ -13,17 +13,30 @@ public class ThirdPersonMovement : MonoBehaviour
     [SerializeField] private float _turnSmoothTime = 0.1f;
     float _turnSmoothVelocity;
     [SerializeField] Transform _cam;
-    private GameObject _currentPlayerWorm;
+    private WormData _currentPlayerWorm;
 
 
 
     void Start()
     {
-        _currentPlayerWorm = ActivePlayerManager.instance.activePlayer.GetCurrentWorm().gameObject;
+        _currentPlayerWorm = ActivePlayerManager.instance.activePlayer.GetCurrentWorm();
         _characterController = _currentPlayerWorm.GetComponent<CharacterController>();
-        _cmFreeLook.GetRig(2).LookAt = _currentPlayerWorm.transform;
-        _cmFreeLook.LookAt = _currentPlayerWorm.transform;
-        _cmFreeLook.Follow = _currentPlayerWorm.transform;
+        _cmFreeLook.LookAt = _currentPlayerWorm.aimCenter;
+        _cmFreeLook.Follow = _currentPlayerWorm.aimCenter;
+        _cmFreeLook.GetRig(2).LookAt = _currentPlayerWorm.aimUp;
+        _cmFreeLook.GetRig(1).LookAt = _currentPlayerWorm.aimCenter;
+        _cmFreeLook.GetRig(0).LookAt = _currentPlayerWorm.aimCenter;
+
+    }
+    public void ChangeWormCheck()
+    {
+        _currentPlayerWorm = ActivePlayerManager.instance.activePlayer.GetCurrentWorm();
+        _characterController = _currentPlayerWorm.GetComponent<CharacterController>();
+        _cmFreeLook.LookAt = _currentPlayerWorm.aimCenter;
+        _cmFreeLook.Follow = _currentPlayerWorm.aimCenter;
+        _cmFreeLook.GetRig(2).LookAt = _currentPlayerWorm.aimUp;
+        _cmFreeLook.GetRig(1).LookAt = _currentPlayerWorm.aimCenter;
+        _cmFreeLook.GetRig(0).LookAt = _currentPlayerWorm.aimCenter;
     }
 
     void Update()

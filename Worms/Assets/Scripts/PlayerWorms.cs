@@ -37,19 +37,25 @@ public class PlayerWorms
 
     public void RemoveWorm(WormData removeWorm)
     {
-        
+        //ActivePlayerManager.instance.RemovePlayerWorm(removeWorm);
+
         foreach (var worm in myWorms)
         {
             if (worm == removeWorm)
             {
                 myWorms.Remove(worm);
+                if (myWorms.Count != 0)
+                {
+                    nextWorm %= myWorms.Count;
+
+                }
                 Debug.Log("Worm removed! Player ID " + playerID + " Worms left = " + myWorms.Count);
                 break;
             }
         }
         if (myWorms.Count <= 0)
         {
-            ActivePlayerManager.instance.RemovePlayer(this);
+            //ActivePlayerManager.instance.RemovePlayer(this);
         }
         
     }

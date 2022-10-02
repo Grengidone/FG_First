@@ -17,22 +17,22 @@ public class ProjectileExplosion : MonoBehaviour
             {
                 if (wormCol.HasBeenHit() == false)
                 {
-                    
-                    wormCol.GetComponent<BasicWormPhysics>().KnockBack(force, this.transform.position, radius);
+                    Vector3 temp = wormCol.transform.position - transform.position;
+                    wormCol.GetComponent<BasicWormPhysics>().KnockBack(force * (1 - temp.magnitude / radius), (temp.normalized + Vector3.up * 0.8f).normalized);
                 }
                 wormCol.TakeDamage((int)damage);
-                
+
             }
         }
         Destroy(gameObject);
     }
     void Start()
     {
-        
+
     }
 
     void Update()
     {
-        
+
     }
 }
