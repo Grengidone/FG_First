@@ -73,12 +73,26 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
 
     public void SetNextPlayer()
     {
+        
         activePlayer.PrepareNextWorm();
         activePlayerID++;
-        activePlayerID %= playerList.Count;
+        if (playerList.Count != 0)
+        {
+            activePlayerID %= playerList.Count;
+        }
+        else
+        {
+            // Umm, the game should be over, yeah?
+        }
 
-        activePlayer = playerList[playerOrder[activePlayerID]];
-
+        if (playerList[playerOrder[activePlayerID]].hasLost == true)
+        {
+            activePlayerID++;
+            activePlayerID %= playerList.Count;
+        }else
+        {
+            activePlayer = playerList[playerOrder[activePlayerID]];
+        }
     }
 
     public void RemovePlayerWorm(WormData worm)
@@ -95,7 +109,7 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
                 player.RemoveWorm(worm);
                 if (player.GetWorms().Count <= 0)
                 {
-                    RemovePlayer(playerId);
+                    player.HasLost();
 
                 }
                 break;

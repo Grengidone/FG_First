@@ -12,12 +12,13 @@ public class PlayerWorms
     public int playerID;
     public string playerName;
     public int nextWorm;
-    
+    public bool hasLost = false;
     public PlayerWorms(int id)
     {
          myWorms = new List<WormData>();
         playerID = id;
         nextWorm = 0;
+        hasLost = false;
     }
 
     public List<WormData> GetWorms()
@@ -55,6 +56,7 @@ public class PlayerWorms
         }
         if (myWorms.Count <= 0)
         {
+            HasLost();
             //ActivePlayerManager.instance.RemovePlayer(this);
         }
         
@@ -64,6 +66,10 @@ public class PlayerWorms
         return myWorms[nextWorm];
     }
 
+    public void HasLost()
+    {
+        hasLost = true;
+    }
     public void PrepareNextWorm()
     {
         nextWorm++;
