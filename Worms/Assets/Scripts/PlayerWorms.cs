@@ -73,7 +73,10 @@ public class PlayerWorms
     public void PrepareNextWorm()
     {
         nextWorm++;
+        if (myWorms.Count != 0)
+        {
         nextWorm %= myWorms.Count;
+        }
     }
 
     public void SayHello()

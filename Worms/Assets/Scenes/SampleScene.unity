@@ -2519,7 +2519,7 @@ MonoBehaviour:
   clockTime: {fileID: 0}
   cameraData: {fileID: 291312478}
   projectilePrefab: {fileID: 5801748383349438497, guid: fb56f3452533bc44db60817ce41dd761, type: 3}
-  force: 20.37
+  force: 35
 --- !u!1 &1672035891
 GameObject:
   m_ObjectHideFlags: 3
@@ -2729,10 +2729,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1103420932504749144, guid: fb56f3452533bc44db60817ce41dd761, type: 3}
-      propertyPath: force
-      value: 36.04
-      objectReference: {fileID: 0}
     - target: {fileID: 1768272454235169194, guid: fb56f3452533bc44db60817ce41dd761, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -2780,10 +2776,6 @@ PrefabInstance:
     - target: {fileID: 5801748383349438497, guid: fb56f3452533bc44db60817ce41dd761, type: 3}
       propertyPath: m_Name
       value: Kaboom (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5801748383349438497, guid: fb56f3452533bc44db60817ce41dd761, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb56f3452533bc44db60817ce41dd761, type: 3}
@@ -2934,6 +2926,10 @@ PrefabInstance:
     - target: {fileID: 5801748383349438497, guid: fb56f3452533bc44db60817ce41dd761, type: 3}
       propertyPath: m_Name
       value: Kaboom
+      objectReference: {fileID: 0}
+    - target: {fileID: 5801748383349438497, guid: fb56f3452533bc44db60817ce41dd761, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb56f3452533bc44db60817ce41dd761, type: 3}

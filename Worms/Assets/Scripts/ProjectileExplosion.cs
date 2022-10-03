@@ -18,7 +18,7 @@ public class ProjectileExplosion : MonoBehaviour
                 if (wormCol.HasBeenHit() == false)
                 {
                     Vector3 temp = wormCol.transform.position - transform.position;
-                    wormCol.GetComponent<BasicWormPhysics>().KnockBack(force * (1 - temp.magnitude / radius), (temp.normalized + Vector3.up * 0.8f).normalized);
+                    wormCol.GetComponent<BasicWormPhysics>().KnockBack(force * (1 - temp.magnitude / radius), (temp.normalized + Vector3.up * 1.3f).normalized);
                 }
                 wormCol.TakeDamage((int)damage);
 
