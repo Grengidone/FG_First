@@ -20,6 +20,9 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
     [SerializeField] float force;
     private int activePlayerID = 0;
 
+    public List<PlayerWorms> playersLost = new List<PlayerWorms>();
+    [HideInInspector] public bool gameEnded = false;
+
     protected override void Init()
     {
         WormData.stinked += RemovePlayerWorm;
@@ -37,7 +40,7 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V))
+        if (Input.GetKeyDown(KeyCode.V) && !gameEnded)
         {
             Transform fireLocation = GetActivePlayer().GetCurrentWorm().fireLocation;
             GameObject projectile = Instantiate(projectilePrefab, fireLocation.position, fireLocation.rotation);
@@ -68,7 +71,11 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
     public void ChangeTurn()
     {
         SetNextPlayer();
-        cameraData.ChangeWormCheck();
+        if (!gameEnded)
+        {
+            cameraData.ChangeWormCheck();
+
+        }
     }
 
     public void SetNextPlayer()
@@ -80,70 +87,58 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
         {
             activePlayerID %= playerList.Count;
         }
-        else
-        {
-            // Umm, the game should be over, yeah?
-        }
+        
 
-        if (playerList[playerOrder[activePlayerID]].hasLost == true)
+       while (playerList[playerOrder[activePlayerID]].hasLost == true)
         {
+            if (playersLost.Count >= playerList.Count - 1)
+            {
+                GameEnded();
+                break;
+            }
             activePlayerID++;
-            activePlayerID %= playerList.Count;
-        }else
-        {
-            activePlayer = playerList[playerOrder[activePlayerID]];
+            if (playerList.Count != 0)
+            {
+                activePlayerID %= playerList.Count;
+            }
         }
+        activePlayer = playerList[playerOrder[activePlayerID]];
+
+
     }
 
     public void RemovePlayerWorm(WormData worm)
     {
+        worm.gameObject.SetActive(false);
+
         int playerId = worm.playerID;
-        if (playerId == activePlayer.playerID)
-        {
-            ChangeTurn();
-        }
+       
         foreach(PlayerWorms player in playerList)
         {
             if (player.playerID == playerId)
             {
+                
                 player.RemoveWorm(worm);
-                if (player.GetWorms().Count <= 0)
+                if (playerId == activePlayer.playerID && activePlayer.GetCurrentWorm()?.id == worm.id)
                 {
-                    player.HasLost();
+                    ChangeTurn();
+                } else if (activePlayer.GetCurrentWorm() == null)
+                {
+                    ChangeTurn();
 
                 }
                 break;
             }
         }
+        
 
     }
 
-    public void RemovePlayer(int playerID)
+
+    public void GameEnded()
     {
-        foreach (PlayerWorms player in playerList)
-        {
-            if (player.playerID == playerID)
-            {
-                playerList.Remove(player);
-                break;
-            }
-        }
-        foreach (var item in playerOrder)
-        {
-            if (item == playerID)
-            {
-                playerOrder.Remove(item);
-                break;
-            }
-        }
-        if (playerList.Count == 1)
-        {
-            // This Player Wins
-        }
-        else if (playerList.Count <= 0)
-        {
-            // No worms alive, its a tie
-        }
+        Debug.LogWarning("ARARARARAR");
+        gameEnded = true;
     }
 
     private void OnDisable()

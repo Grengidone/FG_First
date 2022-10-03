@@ -63,11 +63,16 @@ public class PlayerWorms
     }
     public WormData GetCurrentWorm()
     {
-        return myWorms[nextWorm];
+        if (nextWorm < myWorms.Count)
+        {
+            return myWorms[nextWorm];
+        }
+        else return null;
     }
 
     public void HasLost()
     {
+        ActivePlayerManager.instance.playersLost.Add(this);
         hasLost = true;
     }
     public void PrepareNextWorm()

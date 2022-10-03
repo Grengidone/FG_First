@@ -73,9 +73,9 @@ public class WormData : MonoBehaviour
         return hasTakenDamage;
     }
     public void HasDied()
-    {
-        gameObject.SetActive(false);
+    {        
         stinked(this);
+
     }
 
     #endregion
