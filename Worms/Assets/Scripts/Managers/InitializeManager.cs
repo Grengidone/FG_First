@@ -31,6 +31,15 @@ public class InitializeManager : MonoSingleton<InitializeManager>
         base.Awake();
         _wormsPerPlayer = PlayerPrefs.GetInt("WormsCount");
         _playerCount = PlayerPrefs.GetInt("PlayersCount");
+        if (_wormsPerPlayer == 0)
+        {
+            _wormsPerPlayer = 1;
+        } 
+        if (_playerCount == 0)
+        {
+            _playerCount = 2;
+        }
+        
         int id = 0;
 
         for (int j = 0; j < _playerCount; j++)
