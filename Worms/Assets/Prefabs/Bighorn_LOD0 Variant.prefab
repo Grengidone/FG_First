@@ -528,7 +528,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 4ab367573fc7db8478af59131ecc7369, type: 3}
       propertyPath: m_Name
-      value: Bighorn_LOD0
+      value: Bighorn_LOD0 Variant
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 4ab367573fc7db8478af59131ecc7369, type: 3}
       propertyPath: m_Layer
@@ -588,15 +588,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4ab367573fc7db8478af59131ecc7369, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.257669
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4ab367573fc7db8478af59131ecc7369, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 20.32
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4ab367573fc7db8478af59131ecc7369, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.37189192
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4ab367573fc7db8478af59131ecc7369, type: 3}
       propertyPath: m_LocalRotation.w
@@ -648,9 +648,9 @@ CharacterController:
   m_Radius: 0.47
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.04
-  m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 1, z: 0}
+  m_SkinWidth: 0.001
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1.03, z: 0}
 --- !u!136 &2676370160032847164
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -728,18 +728,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be368065f5bd45c47ab242996bca313e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxFallSpeedRatio: 1
+  _maxFallSpeedRatio: 2.5
   _layerMask:
     serializedVersion: 2
     m_Bits: 128
   groundDelay: 0.2
   charController: {fileID: 1716994050367965000}
   testGrounded: 1
-  groundCheckRadius: 0.41
-  groundCheckOffset: {x: 0, y: -0.05, z: 0}
+  groundCheckRadius: 0.3
+  groundCheckOffset: {x: 0, y: 0.28, z: 0}
   slowDownSpeed: 0.01
   groundCheckSize: {x: 0.4, y: 0.05, z: 0.5}
-  isGrounded: 0
 --- !u!4 &653519371315438365 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 4ab367573fc7db8478af59131ecc7369, type: 3}

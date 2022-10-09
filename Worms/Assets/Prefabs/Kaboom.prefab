@@ -112,8 +112,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 100
-  force: 36.04
-  radius: 5
+  force: 12
+  radius: 46.55
 --- !u!54 &5638253687823557721
 Rigidbody:
   m_ObjectHideFlags: 0

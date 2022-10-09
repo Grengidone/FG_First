@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 653519371314954045, guid: 59645b72e80545540bb49d486eda8441, type: 3}
       propertyPath: m_Name
-      value: Bighorn_LOD0 Variant Variant
+      value: WormDead
       objectReference: {fileID: 0}
     - target: {fileID: 653519371315438365, guid: 59645b72e80545540bb49d486eda8441, type: 3}
       propertyPath: m_RootOrder
@@ -59,6 +59,7 @@ PrefabInstance:
     - {fileID: 653519371322330365, guid: 59645b72e80545540bb49d486eda8441, type: 3}
     - {fileID: 1655922520763756603, guid: 59645b72e80545540bb49d486eda8441, type: 3}
     - {fileID: 76330690974708672, guid: 59645b72e80545540bb49d486eda8441, type: 3}
+    - {fileID: 1716994050367965000, guid: 59645b72e80545540bb49d486eda8441, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 59645b72e80545540bb49d486eda8441, type: 3}
 --- !u!1 &1101701597934835385 stripped
 GameObject:

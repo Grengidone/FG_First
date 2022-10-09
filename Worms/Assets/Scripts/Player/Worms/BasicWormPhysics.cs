@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class BasicWormPhysics : MonoBehaviour
 {
@@ -24,8 +25,7 @@ public class BasicWormPhysics : MonoBehaviour
     Vector3 groundCheckPosition;
     [SerializeField] Vector3 groundCheckSize;
 
-    public bool isGrounded = true;
-
+    bool hasJumped = false;
 
     Vector3 velVector;
     void Start()
@@ -38,54 +38,63 @@ public class BasicWormPhysics : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        groundCheckPosition = transform.position - groundCheckOffset;
-        
-        if (testGrounded) GroundCheck();
-
-        if (isGrounded) // Remove
+        groundCheckPosition = transform.position + groundCheckOffset;
+        velVector.y += _gravity * Time.deltaTime;
+        velVector.y = Mathf.Clamp(velVector.y, _maxFallSpeed, Mathf.Infinity);
+        if (GroundCheck())
         {
-            velVector.y = 0;
-            Vector3 tempVector = new Vector3(velVector.x, 0f, velVector.z).normalized;
-            float tempX = Mathf.Abs(velVector.x) - (tempVector.x * slowDownSpeed * Time.deltaTime) ;
-            if (tempX > 0)
-            {
-                velVector.x -= TestNegative(velVector.x) * tempX ;
-            }
-            else if (tempX <= 0) 
-            { velVector.x = 0; }
+            velVector.y = Mathf.Clamp(velVector.y, 0f, Mathf.Infinity);
+        } 
+       
 
-            float tempZ = Mathf.Abs(velVector.z) - (tempVector.z * slowDownSpeed * Time.deltaTime) ;
-            if (tempZ > 0)
-            {
-                Debug.LogWarning(tempZ);
-                velVector.z -= TestNegative(velVector.z) * tempZ ;
-            }
-            else if (tempZ <= 0)
-            { velVector.z = 0; }
+        charController.Move(velVector * Time.deltaTime);
+        /*if (ActivePlayerManager.instance.activePlayer.GetCurrentWorm().id == gameObject.GetComponent<WormData>().id && ActivePlayerManager.instance.activePlayer.GetCurrentWorm().playerID == gameObject.GetComponent<WormData>().playerID)
+        {
+            //Debug.LogWarning(GroundCheck() + " : Is the check for this object : " + gameObject.name + Time.time);
+        }*/
+    }
+    IEnumerator JumpDelay(float jumpDelay)
+    {
+        hasJumped = true;
+        yield return new WaitForSeconds(jumpDelay);
+        hasJumped = false;
+    }
+
+    private void FixedUpdate()
+    {
+        if (GroundCheck() || (ActivePlayerManager.instance.activePlayer.GetCurrentWorm().id == gameObject.GetComponent<WormData>().id && ActivePlayerManager.instance.activePlayer.GetCurrentWorm().playerID == gameObject.GetComponent<WormData>().playerID))
+        {
+            Vector2 vectorTemp = Vector2.Lerp(new Vector2(velVector.x, velVector.z), new Vector2(0f, 0f), 1 - Time.fixedDeltaTime * 2) ;
+            velVector -= new Vector3(vectorTemp.x, 0f, vectorTemp.y);
+        }
+        
+    }
+
+    bool GroundCheck()
+    {
+        if (!Physics.CheckSphere(groundCheckPosition, groundCheckRadius, _layerMask, QueryTriggerInteraction.Collide) && !charController.isGrounded)
+        {
+            return false;
         }
         else
         {
-            velVector.y += _gravity * Time.deltaTime;
-            Mathf.Clamp(velVector.y, _maxFallSpeed, Mathf.Infinity);
-            
+            return true;
         }
-        if (gameObject.GetComponent<WormData>().id == 6 && gameObject.GetComponent<WormData>().playerID == 6)
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(groundCheckPosition, groundCheckRadius);
+
+    }
+
+    public void Jump(float jumpForce)
+    {
+        if (GroundCheck() && !hasJumped)
         {
-            Debug.LogWarning(velVector.y);
-
+            velVector += Vector3.up * jumpForce;
+            StartCoroutine(JumpDelay(0.1f));
         }
-        charController.Move(velVector*Time.deltaTime);
-
-    }
-
-    void GroundCheck()
-    {
-        isGrounded = charController.isGrounded;
-        //isGrounded = Physics.CheckBox (transform.position - groundCheckOffset, groundCheckSize, Quaternion.identity, _layerMask);
-    }
-    private void OnDrawGizmosSelected()
-    {
-        //Gizmos.DrawCube(groundCheckPosition, groundCheckSize * 2);
     }
 
     float TestNegative (float test)
@@ -106,7 +115,6 @@ public class BasicWormPhysics : MonoBehaviour
     IEnumerator GroundedDelay()
     {
         testGrounded = false;
-        isGrounded = false;
         yield return new WaitForSeconds(groundDelay);
         testGrounded = true;
 

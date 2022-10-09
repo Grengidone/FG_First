@@ -14,13 +14,15 @@ public class ThirdPersonMovement : MonoBehaviour
     float _turnSmoothVelocity;
     [SerializeField] Transform _cam;
     private WormData _currentPlayerWorm;
+    private BasicWormPhysics _characterPhysics;
 
-
+    [SerializeField] float jumpForce = 2f;
 
     void Start()
     {
         _currentPlayerWorm = ActivePlayerManager.instance.activePlayer.GetCurrentWorm();
         _characterController = _currentPlayerWorm.GetComponent<CharacterController>();
+        _characterPhysics = _currentPlayerWorm.GetComponent<BasicWormPhysics>();
         _cmFreeLook.LookAt = _currentPlayerWorm.aimCenter;
         _cmFreeLook.Follow = _currentPlayerWorm.aimCenter;
         _cmFreeLook.GetRig(2).LookAt = _currentPlayerWorm.aimUp;
@@ -32,6 +34,7 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         _currentPlayerWorm = ActivePlayerManager.instance.activePlayer.GetCurrentWorm();
         _characterController = _currentPlayerWorm.GetComponent<CharacterController>();
+        _characterPhysics = _currentPlayerWorm.GetComponent<BasicWormPhysics>();
         _cmFreeLook.LookAt = _currentPlayerWorm.aimCenter;
         _cmFreeLook.Follow = _currentPlayerWorm.aimCenter;
         _cmFreeLook.GetRig(2).LookAt = _currentPlayerWorm.aimUp;
@@ -60,6 +63,11 @@ public class ThirdPersonMovement : MonoBehaviour
 
                 Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
                 _characterController.Move(moveDir.normalized * _speed * Time.deltaTime);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _characterPhysics.Jump(jumpForce);
             }
         }
     }

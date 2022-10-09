@@ -87,15 +87,11 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
         {
             activePlayerID %= playerList.Count;
         }
-        
+        int zero = 0;
 
-       while (playerList[playerOrder[activePlayerID]].hasLost == true)
+       while (playerList[playerOrder[activePlayerID]].hasLost == true || zero < 100)
         {
-            if (playersLost.Count >= playerList.Count - 1)
-            {
-                GameEnded();
-                break;
-            }
+            zero++;   
             activePlayerID++;
             if (playerList.Count != 0)
             {
@@ -104,7 +100,11 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
         }
         activePlayer = playerList[playerOrder[activePlayerID]];
 
-
+        if (playersLost.Count >= playerList.Count - 1)
+        {
+            GameEnded();
+            
+        }
     }
 
     public void RemovePlayerWorm(WormData worm)

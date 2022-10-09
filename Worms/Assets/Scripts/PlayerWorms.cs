@@ -54,7 +54,7 @@ public class PlayerWorms
                 break;
             }
         }
-        if (myWorms.Count <= 0)
+        if (myWorms.Count <= 0 && !hasLost)
         {
             HasLost();
             //ActivePlayerManager.instance.RemovePlayer(this);

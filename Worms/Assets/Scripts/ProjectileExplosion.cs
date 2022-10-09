@@ -17,22 +17,21 @@ public class ProjectileExplosion : MonoBehaviour
             {
                 if (wormCol.HasBeenHit() == false)
                 {
-                    Vector3 temp = wormCol.transform.position - transform.position;
-                    wormCol.GetComponent<BasicWormPhysics>().KnockBack(force * (1 - temp.magnitude / radius), (temp.normalized + Vector3.up * 1.3f).normalized);
+                    RaycastHit ray;
+                    Physics.Raycast(transform.position, collider.bounds.center - transform.position, out ray, radius);
+                    if (ray.collider.CompareTag("Player"))
+                    {
+                        Vector3 temp = wormCol.transform.position - transform.position;
+                        wormCol.GetComponent<BasicWormPhysics>().KnockBack(force * (1 - temp.magnitude / radius), (temp.normalized + Vector3.up * 1.3f).normalized);
+                        wormCol.TakeDamage((int)(damage * temp.magnitude / radius));
+                    }         
                 }
-                wormCol.TakeDamage((int)damage);
-
             }
         }
         Destroy(gameObject);
     }
-    void Start()
+    private void OnDrawGizmosSelected()
     {
-
-    }
-
-    void Update()
-    {
-
+        Gizmos.DrawWireSphere(transform.position, radius);
     }
 }
