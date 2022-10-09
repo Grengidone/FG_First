@@ -19,6 +19,7 @@ public class OpeningButtons : MonoBehaviour
     {
         _playerCount = PlayerPrefs.GetInt("PlayersCount");
         _wormCount = PlayerPrefs.GetInt("WormsCount");
+        
 
     }
 
@@ -42,6 +43,7 @@ public class OpeningButtons : MonoBehaviour
         /*Player */
         PlayerPrefs.SetInt("PlayersCount", _playerCount);
         PlayerPrefs.SetInt("WormsCount", _wormCount);
+        SceneManager.LoadScene(1);
     }
 
     public void IncreaseCountPlayers()

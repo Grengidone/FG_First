@@ -14,7 +14,7 @@ public class InitializeManager : MonoSingleton<InitializeManager>
     private int _wormsPerPlayer;
     private int _playerCount;
 
-    InitializeManager initialize;
+
  
     #region Comments
     // We have to initialize each worm at some targeted spawn locations,
@@ -26,8 +26,9 @@ public class InitializeManager : MonoSingleton<InitializeManager>
 
     
 
-    protected override void Init()
+     void Awake()
     {
+        base.Awake();
         _wormsPerPlayer = PlayerPrefs.GetInt("WormsCount");
         _playerCount = PlayerPrefs.GetInt("PlayersCount");
         int id = 0;
@@ -52,8 +53,8 @@ public class InitializeManager : MonoSingleton<InitializeManager>
             }
         }
 
-        print(worms.Count);
-        print(_playerCount + "  and  " + _wormsPerPlayer);
+        Debug.Log(worms.Count);
+        Debug.Log(_playerCount + "  and  " + _wormsPerPlayer);
         
         float i = 0f;
         float z = 0f;
@@ -74,9 +75,7 @@ public class InitializeManager : MonoSingleton<InitializeManager>
             z++;
         }
         SpawnWorms();
-        ///StartCoroutine(Countdown(2, 3));
-        ///StartCoroutine(Countdown(4, 4));
-        ///StartCoroutine(Countdown(6, 5));
+
     }
 
     IEnumerator Countdown(float time, int dead)

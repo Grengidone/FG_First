@@ -41,7 +41,7 @@ public class BasicWormPhysics : MonoBehaviour
         groundCheckPosition = transform.position + groundCheckOffset;
         velVector.y += _gravity * Time.deltaTime;
         velVector.y = Mathf.Clamp(velVector.y, _maxFallSpeed, Mathf.Infinity);
-        if (GroundCheck())
+        if (GroundCheck(groundCheckRadius))
         {
             velVector.y = Mathf.Clamp(velVector.y, 0f, Mathf.Infinity);
         } 
@@ -62,7 +62,7 @@ public class BasicWormPhysics : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (GroundCheck() || (ActivePlayerManager.instance.activePlayer.GetCurrentWorm().id == gameObject.GetComponent<WormData>().id && ActivePlayerManager.instance.activePlayer.GetCurrentWorm().playerID == gameObject.GetComponent<WormData>().playerID))
+        if (GroundCheck(groundCheckRadius * 1.2f) || (ActivePlayerManager.instance.activePlayer.GetCurrentWorm().id == gameObject.GetComponent<WormData>().id && ActivePlayerManager.instance.activePlayer.GetCurrentWorm().playerID == gameObject.GetComponent<WormData>().playerID))
         {
             Vector2 vectorTemp = Vector2.Lerp(new Vector2(velVector.x, velVector.z), new Vector2(0f, 0f), 1 - Time.fixedDeltaTime * 2) ;
             velVector -= new Vector3(vectorTemp.x, 0f, vectorTemp.y);
@@ -70,9 +70,9 @@ public class BasicWormPhysics : MonoBehaviour
         
     }
 
-    bool GroundCheck()
+    bool GroundCheck(float radius)
     {
-        if (!Physics.CheckSphere(groundCheckPosition, groundCheckRadius, _layerMask, QueryTriggerInteraction.Collide) && !charController.isGrounded)
+        if (!Physics.CheckSphere(groundCheckPosition, radius, _layerMask, QueryTriggerInteraction.Ignore)/* && !charController.isGrounded*/)
         {
             return false;
         }
@@ -90,7 +90,7 @@ public class BasicWormPhysics : MonoBehaviour
 
     public void Jump(float jumpForce)
     {
-        if (GroundCheck() && !hasJumped)
+        if (GroundCheck(groundCheckRadius) && !hasJumped)
         {
             velVector += Vector3.up * jumpForce;
             StartCoroutine(JumpDelay(0.1f));

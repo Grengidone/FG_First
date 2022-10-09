@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 using Cinemachine;
+using TMPro;
 
 public class WormData : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class WormData : MonoBehaviour
     public static event Stinker stinked;
 
     [SerializeField] private Image _healthBar;
+    [SerializeField] private TextMeshProUGUI _playerName;
+    [SerializeField] private TextMeshProUGUI _characterName;
      public CinemachineVirtualCamera _aimCamera;
      public int health;
     [SerializeField] private int maxHealth;
@@ -40,6 +43,7 @@ public class WormData : MonoBehaviour
     public void SetPlayerID(int playerID)
     {
         this.playerID = playerID;
+        _playerName.SetText("Player: " + (playerID + 1));
     }
 
     public void SetData(int health, string name)
@@ -48,6 +52,8 @@ public class WormData : MonoBehaviour
         maxHealth = health;
         this.wormName = name;
         gameObject.name = wormName;
+
+        _characterName.SetText(wormName);
     }
  
     #region Worm actions

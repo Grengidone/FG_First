@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,22 +10,24 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
     List<PlayerWorms> playerList;
     List<int> playerOrder = new List<int>();
 
-    [SerializeField] float timeBetweenTurns;
-    [SerializeField] float maxTimePerTurn;
-    [SerializeField] Image clock;
-    [SerializeField] TextMeshProUGUI clockTime;
-    [SerializeField] ThirdPersonMovement cameraData;
+    [SerializeField] float _timeBetweenTurns;
+    [SerializeField] float _maxTimePverTurn;
+    [SerializeField] GameObject _winCanvas;
+    [SerializeField] TextMeshProUGUI _playerWin;
+    public ThirdPersonMovement cameraData;
+
 
     public PlayerWorms activePlayer{ get; private set; }
-    [SerializeField] GameObject projectilePrefab;
-    [SerializeField] float force;
-    private int activePlayerID = 0;
+    public GameObject projectilePrefab;
+    [SerializeField] float _force;
+    private int _activePlayerID = 0;
 
     public List<PlayerWorms> playersLost = new List<PlayerWorms>();
     [HideInInspector] public bool gameEnded = false;
-
-    protected override void Init()
+    private bool hasShot = false;
+     void Awake()
     {
+        base.Awake();
         WormData.stinked += RemovePlayerWorm;
         playerList = InitializeManager.instance.GetInitialPlayers();
         var tempOrder = GenerateList(playerList.Count);
@@ -34,19 +37,40 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
             playerOrder.Add(tempOrder[randomNumber]);
             tempOrder.RemoveAt(randomNumber);
         }
-        activePlayer = playerList[playerOrder[activePlayerID]];
-        Debug.LogWarning(activePlayer.GetPlayerID());
+        activePlayer = playerList[playerOrder[_activePlayerID]];
+        //Debug.LogWarning(activePlayer.GetPlayerID());
+        cameraData.ChangeWormCheck();
+    }
+
+    public void CallInit()
+    {
+
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V) && !gameEnded)
+        if (Input.GetKeyDown(KeyCode.V) && !gameEnded && !hasShot)
         {
             Transform fireLocation = GetActivePlayer().GetCurrentWorm().fireLocation;
             GameObject projectile = Instantiate(projectilePrefab, fireLocation.position, fireLocation.rotation);
-            projectile.GetComponent<Rigidbody>().AddForce(activePlayer.GetCurrentWorm().gameObject.transform.forward * force, ForceMode.Impulse);
-            ChangeTurn();
+            projectile.GetComponent<Rigidbody>().AddForce(activePlayer.GetCurrentWorm().gameObject.transform.forward * _force, ForceMode.Impulse);
+            StartCoroutine(WaitTime(projectile));
         }
+    }
+
+    IEnumerator WaitTime(GameObject waitTileUnactive)
+    {
+        hasShot = true;
+        while (waitTileUnactive.activeInHierarchy == true )
+        {
+            yield return new WaitForEndOfFrame();
+            if (waitTileUnactive == null)
+            {
+                break;
+            }
+        }
+        hasShot = false;
+        ChangeTurn();
     }
 
     List<int> GenerateList(int count)
@@ -82,23 +106,23 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
     {
         
         activePlayer.PrepareNextWorm();
-        activePlayerID++;
+        _activePlayerID++;
         if (playerList.Count != 0)
         {
-            activePlayerID %= playerList.Count;
+            _activePlayerID %= playerList.Count;
         }
         int zero = 0;
 
-       while (playerList[playerOrder[activePlayerID]].hasLost == true || zero < 100)
+       while (playerList[playerOrder[_activePlayerID]].hasLost == true && zero < 100)
         {
             zero++;   
-            activePlayerID++;
+            _activePlayerID++;
             if (playerList.Count != 0)
             {
-                activePlayerID %= playerList.Count;
+                _activePlayerID %= playerList.Count;
             }
         }
-        activePlayer = playerList[playerOrder[activePlayerID]];
+        activePlayer = playerList[playerOrder[_activePlayerID]];
 
         if (playersLost.Count >= playerList.Count - 1)
         {
@@ -137,8 +161,26 @@ public class ActivePlayerManager : MonoSingleton<ActivePlayerManager>
 
     public void GameEnded()
     {
-        Debug.LogWarning("ARARARARAR");
+        PlayerWorms player = null;
+        foreach(PlayerWorms playerWorms in playerList)
+        {
+            if (!playerWorms.hasLost)
+            {
+                player = playerWorms;
+            }
+        }
         gameEnded = true;
+        _winCanvas.SetActive(true);
+        switch (player)
+        {
+            case null:
+                _playerWin.SetText("Player: " + "01100100 01101001 01100101 01100100");
+                break;
+
+            default:
+                _playerWin.SetText("Player: " + (player.playerID + 1));
+                break;
+        }
     }
 
     private void OnDisable()

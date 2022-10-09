@@ -111,9 +111,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cdbf93339b9f164492752842c98e832, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 100
-  force: 12
-  radius: 46.55
+  damage: 42
+  force: 30
+  radius: 20
 --- !u!54 &5638253687823557721
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -7,6 +7,11 @@ public class ProjectileExplosion : MonoBehaviour
     public float damage = 10f;
     public float force = 2f;
     public float radius = 5f;
+
+    private void Start()
+    {
+        Destroy(gameObject, 10f);
+    }
     private void OnCollisionEnter(Collision collision)
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
