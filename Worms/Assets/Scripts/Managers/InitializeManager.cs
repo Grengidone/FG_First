@@ -35,10 +35,10 @@ public class InitializeManager : MonoSingleton<InitializeManager>
 
         for (int j = 0; j < _playerCount; j++)
         {
-            print(_playerCount.ToString());
+            Debug.Log(_playerCount.ToString());
             PlayerWorms myWorms = new PlayerWorms(j);
             players.Add(myWorms);
-            print(players[j]);
+            Debug.Log(players[j]);
             for (int k = 0; k < _wormsPerPlayer; k++)
             {
                 WormData worms = Instantiate(_wormPrefab).GetComponent<WormData>();
@@ -47,7 +47,7 @@ public class InitializeManager : MonoSingleton<InitializeManager>
                 worms.SetID(k);
                 players[j].SayHello();
                 players[j].AddWorm(worms);
-                print(id.ToString());
+                Debug.Log(id.ToString());
                 id++;
                 this.worms.Add(worms);
             }
@@ -55,38 +55,17 @@ public class InitializeManager : MonoSingleton<InitializeManager>
 
         Debug.Log(worms.Count);
         Debug.Log(_playerCount + "  and  " + _wormsPerPlayer);
-        
-        float i = 0f;
-        float z = 0f;
-        Vector3 direction = new Vector3();
 
-        foreach (PlayerWorms player in players)
-        {
 
-            List<WormData> wormList = player.GetWorms();
-            foreach (WormData worm in wormList)
-            {
-                direction = new Vector3(Mathf.Sin(Mathf.Deg2Rad * i), 0f, Mathf.Cos(Mathf.Deg2Rad * i)).normalized;
-                worm.gameObject.transform.position = direction * 10f;
-                worm.gameObject.transform.Translate(new Vector3(0f, z * 2f, 0f), Space.Self);
-                i += 360f / (_playerCount * _wormsPerPlayer);
-
-            }
-            z++;
-        }
         SpawnWorms();
 
     }
 
-    IEnumerator Countdown(float time, int dead)
-    {
-        yield return new WaitForSeconds(time);
-        worms[dead].HasDied();
-    }
+ 
 
     private void SpawnWorms()
     {
-        var list = spawnPoints;
+        List<GameObject> list = spawnPoints;
         int randomNumber;
         foreach (WormData worm in worms)
         {
@@ -101,8 +80,5 @@ public class InitializeManager : MonoSingleton<InitializeManager>
         return players;
     } 
 
-    void DeathHasOccured(WormData worms)
-    {
-        print("The worm " + worms.wormName + " has died!" );
-    }
+
 }
